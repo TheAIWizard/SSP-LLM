@@ -16,22 +16,16 @@ spec:
         - name: init-container
           image: busybox:latest
           command: ["/bin/sh", "-c"]
-          args: ["sh","/config/init-script.sh", "/app/data/"] # a refaire plus propre avec configmap
+          args: ["curl -O /data/zephyr-7b-beta.Q8_0.gguf https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"] # a refaire plus propre avec configmap
           volumeMounts:
-          - name: init-script-configmap
-            mountPath: /config
-          - name: load-init-script
-            mountPath: /app/data
+          - name: load-model
+            mountPath: /data
       containers:
         - name: gguf-container
           image: ghcr.io/abetlen/llama-cpp-python:latest
           ports:
             - containerPort: 7860
           env:
-            - name: HF_HOME
-              value: /data
-            - name: REPO_ID
-              value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
             - name: MODEL
               value: "/app/data/zephyr-7b-beta.Q8_0.gguf"
             - name: N_GPU_LAYERS
@@ -41,22 +35,14 @@ spec:
             - name: N_BATCH
               value: "126"
           volumeMounts:
-            - name: get-model-data
-              mountPath: /app/data
+            - name: load-model
+              mountPath: /data
               subPath: portal
-            - name: load-init-script
-              mountPath: /docker-entrypoint-initdb.d
           resources:
             limits:
               nvidia.com/gpu: "1"
               memory: "36Gi"
               cpu: "10000m"
       volumes:
-        - name: init-script-configmap
-          configMap:
-            name: init-script-configmap
-            defaultMode: 0500
-        - name: get-model-data
-          emptyDir: {}
-        - name: load-init-script
+        - name: load-model
           emptyDir: {}
