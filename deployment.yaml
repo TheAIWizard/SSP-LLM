@@ -1,32 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-ggml-app
+  name: my-gguf-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-ggml-app
+      app: my-gguf-api
   template:
     metadata:
       labels:
-        app: my-ggml-app
-    containers:
-    - name: ggml-container
-      image: ghcr.io/abetlen/llama-cpp-python:latest
-      ports:
-        - containerPort: 7860
-      env:
-        - name: HF_HOME
-          value: "/data"
-        - name: REPO_ID
-          value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
-        - name: MODEL
-          value: "/:models" 
-          subPath: portal
-      volumeMounts:
-        - name: models
-          mountPath: "/path/to/models"
+        app: my-gguf-api
+    spec:
+      containers:
+        - name: gguf-container
+          image: ghcr.io/abetlen/llama-cpp-python:latest
+          ports:
+            - containerPort: 7860
+          env:
+            - name: HF_HOME
+              value: "/data"
+            - name: REPO_ID
+              value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
+            - name: MODEL
+              value: "zephyr-7b-beta.Q8_0.gguf" 
+          volumeMounts:
+            - name: models
+              mountPath: "/models"
+              subPath: portal
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+              memory: "36Gi"
+              cpu: "10000m"
       volumes:
-      - name: models
-        emptyDir: {}
+        - name: models
+          emptyDir: {}
