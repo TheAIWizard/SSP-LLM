@@ -16,12 +16,12 @@ spec:
         - name: init-container
           image: alpine:latest
           command: ["/bin/sh", "-c"]
-          args: ["apk update && apk add curl && cd app/data && curl -O https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"]
+          args: ["apk update && apk add curl && cd app/model && curl -O https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"]
           volumeMounts:
           - name: init-script-configmap
             mountPath: /config
           - name: get-model-data
-            mountPath: /app/data
+            mountPath: /app/model
       containers:
         - name: gguf-container
           image: ghcr.io/abetlen/llama-cpp-python:latest
@@ -29,7 +29,7 @@ spec:
             - containerPort: 7860
           env:
             - name: MODEL
-              value: "/app/data/zephyr-7b-beta.Q8_0.gguf"
+              value: "/app/model/zephyr-7b-beta.Q8_0.gguf"
             - name: N_GPU_LAYERS
               value: "-1"
             - name: N_CTX
@@ -38,7 +38,7 @@ spec:
               value: "126"
           volumeMounts:
             - name: get-model-data
-              mountPath: /app/data
+              mountPath: /app/model
           resources:
             limits:
               nvidia.com/gpu: "1"
