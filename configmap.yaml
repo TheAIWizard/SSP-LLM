@@ -3,8 +3,10 @@ kind: ConfigMap
 metadata:
   name: init-script-configmap
 data:
-  init-script.sh: |
+  init-script.sh: |-
     #!/bin/bash
+    apk update
+    apk --no-cache add curl
     DESTINATION="zephyr-7b-beta.Q8_0.gguf"
     MODEL_URL="https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
     sudo mkdir -p "$(dirname "$DESTINATION")"

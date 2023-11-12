@@ -14,12 +14,14 @@ spec:
     spec:
       initContainers:
         - name: init-container
-          image: busybox:latest
+          image: alpine:latest
           command: ["/bin/sh", "-c"]
-          args: ["curl -O /data/zephyr-7b-beta.Q8_0.gguf https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"] # a refaire plus propre avec configmap
+          args: ["apk update && apk add curl && cd app/data && curl -O https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"]
           volumeMounts:
-          - name: load-model
-            mountPath: /data
+          - name: init-script-configmap
+            mountPath: /config
+          - name: get-model-data
+            mountPath: /app/data
       containers:
         - name: gguf-container
           image: ghcr.io/abetlen/llama-cpp-python:latest
@@ -35,14 +37,16 @@ spec:
             - name: N_BATCH
               value: "126"
           volumeMounts:
-            - name: load-model
-              mountPath: /data
-              subPath: portal
+            - name: get-model-data
+              mountPath: /app/data
           resources:
             limits:
               nvidia.com/gpu: "1"
               memory: "36Gi"
               cpu: "10000m"
       volumes:
-        - name: load-model
+        - name: init-script-configmap
+          configMap:
+            name: init-script-configmap
+        - name: get-model-data
           emptyDir: {}

@@ -14,12 +14,12 @@ spec:
     spec:
       initContainers:
         - name: init-container
-          image: busybox:latest
+          image: alpine:latest
           command: ["/bin/sh", "-c"]
-          args: ["sh","/config/init-script.sh", "/app/data/"] # a refaire plus propre avec configmap
+          args: ["sh","~/config/init-script.sh", "/app/data/"] # a refaire plus propre avec configmap
           volumeMounts:
-          - name: init-script-configmap
-            mountPath: /config
+          - name: configmap-volume
+            mountPath: ~/config
           - name: load-init-script
             mountPath: /app/data
       containers:
@@ -52,7 +52,7 @@ spec:
               memory: "36Gi"
               cpu: "10000m"
       volumes:
-        - name: init-script-configmap
+        - name: configmap-volume
           configMap:
             name: init-script-configmap
             defaultMode: 0500

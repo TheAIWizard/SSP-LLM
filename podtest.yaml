@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toto
+spec:
+  containers:
+  - name: init-container
+    image: busybox:latest
+    command: ["/bin/sh", "-c"]
+    args: ["wget -O /data/zephyr-7b-beta.Q8_0.gguf https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"]
+    volumeMounts:
+    - name: toto-storage
+      mountPath: /data
+  volumes:
+  - name: toto-storage
+    emptyDir: {}
