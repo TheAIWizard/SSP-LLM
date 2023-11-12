@@ -37,5 +37,5 @@ run_command sh k8s/init-script.sh $MODEL_NAME $MODEL_URL
 #python3 k8s/download-model.py $MODEL_NAME $MODEL_URL
 
 # execute llama cpp python
-cd .. || exit
+#cd "llama-cpp-python" || exit
 run_command python3 -m llama_cpp.server --model ~/work/$BASE_DIR/$MODEL_NAME --n_gpu_layers 35
