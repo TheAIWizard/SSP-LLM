@@ -33,9 +33,11 @@ CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install -e .[server] --no-cache
 # Go back to last directory
 cd - || exit
 # download model file
-run_command sh k8s/init-script.sh $MODEL_NAME $MODEL_URL
+#run_command sh k8s/init-script.sh $MODEL_NAME $MODEL_URL
 #python3 k8s/download-model.py $MODEL_NAME $MODEL_URL
 
 # execute llama cpp python
 #cd "llama-cpp-python" || exit
-run_command python3 -m llama_cpp.server --model ~/work/$BASE_DIR/$MODEL_NAME --n_gpu_layers 35
+#run_command python3 -m llama_cpp.server --model ~/work/$BASE_DIR/$MODEL_NAME --n_gpu_layers 35
+
+python3 -c 'from llama_cpp import Llama; llm=Llama(model_path="zephyr-7b-beta.Q8_0.gguf", n_gpu_layers=35); print(llm("Who is Sukuna ?"))'
