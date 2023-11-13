@@ -5,9 +5,9 @@ FROM inseefrlab/onyxia-vscode-pytorch:py3.11.4-gpu
 WORKDIR /app
 
 # Copy the local requirements.txt to the container
-COPY requirements.txt .
+COPY requirements.txt /app
 # Copy the initialization script to download the raw model from HF to the container
-COPY k8s/init-script.sh .
+COPY k8s/init-script.sh /app
 
 # Install virtual environment and dependencies
 RUN python3 -m venv .venv && \
@@ -36,8 +36,8 @@ RUN pip uninstall -y llama-cpp-python && \
 WORKDIR /app
 
 # Copy the remaining files from the local directory to the container
-COPY .venv .
-COPY entrypoint.sh .
+COPY .venv /app
+COPY entrypoint.sh /app
 
 # Entrypoint script to execute the commands with arguments
 ENTRYPOINT ["./entrypoint.sh"]
