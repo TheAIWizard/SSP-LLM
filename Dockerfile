@@ -31,8 +31,8 @@ ENV MODEL_NAME=${MODEL_NAME}
 ENV N_GPU_LAYERS N_CTXT N_BATCH MAIN_GPU EMBEDDING
 
 # Mount/Load the model in container if the user wants to load his model on local and not url
-# Create a named volume and mount it at root
-VOLUME /app
+# Create a named volume and mount it at /app/models
+VOLUME /app/models
 
 # Clone the llama-cpp-python repository
 RUN git clone --recurse-submodules https://github.com/abetlen/llama-cpp-python.git
