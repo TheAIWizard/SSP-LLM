@@ -24,6 +24,15 @@ ARG MODEL_URL="https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/
 # Extract the model name
 ARG MODEL_NAME=$(echo "$MODEL_URL" | awk -F'/' '{print $NF}')
 
+# Set arguments as environment variables
+ENV MODEL_URL=${MODEL_URL}
+ENV MODEL_NAME=${MODEL_NAME}
+# Set other environment variables to specify the model
+ENV N_GPU_LAYERS N_CTXT N_BATCH MAIN_GPU EMBEDDING
+
+# Mount/Load the model in container if the user wants to load his model on local and not url
+COPY $MODEL_NAME /app
+
 # Clone the llama-cpp-python repository
 RUN git clone --recurse-submodules https://github.com/abetlen/llama-cpp-python.git
 
@@ -40,4 +49,4 @@ COPY .venv /app
 COPY entrypoint.sh /app
 
 # Entrypoint script to execute the commands with arguments
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh","$MODEL_URL","$N_GPU_LAYERS","$N_CTXT","$N_BATCH","$MAIN_GPU","$EMBEDDING"]
