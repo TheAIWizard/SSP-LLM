@@ -20,7 +20,7 @@ ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/cuda/lib64
 ENV PATH $PATH:$CUDA_HOME/bin
 
 # Extract the model URL on TheBloke HF website
-ARG MODEL_URL="https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
+ARG MODEL_URL=https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf
 # Extract the model name
 ARG MODEL_NAME=$(echo "$MODEL_URL" | awk -F'/' '{print $NF}')
 
@@ -28,7 +28,7 @@ ARG MODEL_NAME=$(echo "$MODEL_URL" | awk -F'/' '{print $NF}')
 ENV MODEL_URL=${MODEL_URL}
 ENV MODEL_NAME=${MODEL_NAME}
 # Set other environment variables to specify the model
-ENV N_GPU_LAYERS N_CTXT N_BATCH MAIN_GPU EMBEDDING
+ENV N_GPU_LAYERS N_CTX N_BATCH MAIN_GPU EMBEDDING
 
 # Mount/Load the model in container if the user wants to load his model on local and not url
 # Create a named volume and mount it at /app/models
@@ -45,9 +45,8 @@ RUN pip uninstall -y llama-cpp-python && \
 # Set the working directory back to /app
 WORKDIR /app
 
-# Copy the remaining files from the local directory to the container
-COPY .venv /app
+# Copy the entry point script from the local directory to the container
 COPY entrypoint.sh /app
 
-# Entrypoint script to execute the commands with arguments
-ENTRYPOINT ["./entrypoint.sh","$MODEL_URL","$N_GPU_LAYERS","$N_CTXT","$N_BATCH","$MAIN_GPU","$EMBEDDING"]
+# Launch script to execute the commands with arguments
+CMD ["./entrypoint.sh", $LOAD_MODEL, $MODEL_URL, $N_GPU_LAYERS, $N_CTX, $N_BATCH, $MAIN_GPU, $EMBEDDING]
