@@ -31,15 +31,6 @@ ENV MODEL_NAME=${MODEL_NAME}
 ENV N_GPU_LAYERS N_CTXT N_BATCH MAIN_GPU EMBEDDING
 
 # Mount/Load the model in container if the user wants to load his model on local and not url
-# If LOAD_MODEL is set, update MODEL_NAME and attach LOAD_MODEL to a volume
-RUN if [ -n "$LOAD_MODEL" ]; then \
-      echo "Using custom model: $LOAD_MODEL"; \
-      MODEL_NAME=$LOAD_MODEL; \
-      echo $LOAD_MODEL > /app/; \
-    else \
-      echo "Using default model: $MODEL_NAME"; \
-    fi
-
 # Create a named volume and mount it at root
 VOLUME /app
 
