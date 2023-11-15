@@ -1,16 +1,18 @@
 #!/bin/sh
 
+# If available locally, load the quantized model in your mounted directory
+LOAD_MODEL=$1
 # Extract the model URL on TheBloke HF website
-MODEL_URL="$1"
+export MODEL_URL="$2"
 # Extract additional variables
-export N_GPU_LAYERS=${2:-35}
-export N_CTX=${3:-3000}
-export N_BATCH=${4:-512}
-export MAIN_GPU=${5:-0}
-export EMBEDDING=${6:-False}
+export N_GPU_LAYERS=$3 #${3:-5}
+export N_CTX=$4 #${4:-3000}
+export N_BATCH=$5 #${5:-512}
+export MAIN_GPU=$6 #${6:-0}
+export EMBEDDING=$7 #${7:-False}
 
 # Extract the model name
-#MODEL_NAME=$(echo "$MODEL_URL" | awk -F'/' '{print $NF}')
+MODEL_NAME=$(echo $MODEL_URL | awk -F'/' '{print $NF}')
 
 # If LOAD_MODEL is set, update MODEL_NAME and attach LOAD_MODEL to a volume
 if [ -n "$LOAD_MODEL" ]; then \

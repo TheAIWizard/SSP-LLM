@@ -7,6 +7,7 @@ WORKDIR /app
 # Copy the local requirements.txt to the container
 COPY requirements.txt /app
 # Copy the initialization script to download the raw model from HF to the container
+# If you want to access to the VScode service on Onyxia and deploy this docker image with Kubernetes, you can use the k8s files
 COPY k8s/init-script.sh /app
 
 # Install virtual environment and dependencies
@@ -19,7 +20,7 @@ ENV CUDA_HOME /usr/local/cuda
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/cuda/lib64
 ENV PATH $PATH:$CUDA_HOME/bin
 
-# Extract the model URL on TheBloke HF website
+# Extract the model URL on TheBloke HF website (default URL)
 ARG MODEL_URL=https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf
 # Extract the model name
 ARG MODEL_NAME=$(echo "$MODEL_URL" | awk -F'/' '{print $NF}')
@@ -31,6 +32,7 @@ ENV MODEL_NAME=${MODEL_NAME}
 ENV N_GPU_LAYERS N_CTX N_BATCH MAIN_GPU EMBEDDING
 
 # Mount/Load the model in container if the user wants to load his model on local and not url
+ENV LOAD_MODEL=
 # Create a named volume and mount it at /app/models
 VOLUME /app/models
 
@@ -46,7 +48,9 @@ RUN pip uninstall -y llama-cpp-python && \
 WORKDIR /app
 
 # Copy the entry point script from the local directory to the container
-COPY entrypoint.sh /app
+COPY docker-run.sh /app
 
 # Launch script to execute the commands with arguments
-CMD ["./entrypoint.sh", $LOAD_MODEL, $MODEL_URL, $N_GPU_LAYERS, $N_CTX, $N_BATCH, $MAIN_GPU, $EMBEDDING]
+ENTRYPOINT [ "./docker-run.sh" ]
+# Define arguments for our api server with their defaut value
+CMD [MODEL_URL=$MODEL_URL, N_GPU_LAYERS=0, N_CTX=4096, N_BATCH=100, $MAIN_GPU=0, EMBEDDING=False]
