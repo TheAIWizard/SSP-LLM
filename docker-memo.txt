@@ -5,4 +5,4 @@ docker build -t aiflowzone/instant-llm-gguf-url-deploy:v1.0 . --no-cache
 
 docker run --rm --name zephyr-7b-beta-q8 -v "/mnt/c/Users/natha/Documents/Programme 10%/Transformers/zephyr-7b-beta.Q8_0.gguf:/app/models/zephyr-7b-beta.Q8_0.gguf" -e LOAD_MODEL=zephyr-7b-beta.Q8_0.gguf --gpus 0 aiflowzone/instant-llm-gguf-url-deploy:v1.0
 
-docker run --rm -it -p 8000:8000 -v "/mnt/c/Users/natha/Documents/Programme 10%/Transformers/:/app/models/" -e MODEL=models/zephyr-7b-beta.Q8_0.gguf -e n_gpu_layers=35 ghcr.io/abetlen/llama-cpp-python:latest 
+docker run --rm --name zephyr-7b-beta-q8 -p 8000:8000 -v "/mnt/c/Users/natha/Documents/Programme 10%/Transformers/:/app/models/" -e MODEL=models/zephyr-7b-beta.Q8_0.gguf -e n_gpu_layers=35 ghcr.io/abetlen/llama-cpp-python:latest 
