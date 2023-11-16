@@ -26,4 +26,4 @@ else \
 
 fi
 
-python3 -m llama_cpp.server --model $MODEL_NAME --n_gpu_layers $N_GPU_LAYERS --n_ctx $N_CTX --n_batch $N_BATCH --main_gpu $MAIN_GPU --embedding $EMBEDDING
+python3 -m llama_cpp.server --host 0.0.0.0 --port 8000 --model $MODEL_NAME --n_gpu_layers $N_GPU_LAYERS --n_ctx $N_CTX --n_batch $N_BATCH --main_gpu $MAIN_GPU --embedding $EMBEDDING
