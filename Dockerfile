@@ -12,7 +12,7 @@ COPY requirements.txt /app
 # Copy the initialization script to download the raw model from HF to the container
 # If you want to access to the VScode service on Onyxia and deploy this docker image with Kubernetes, you can use the k8s files
 COPY k8s /app
-COPY templates/banner.sh /app
+COPY templates/best_banner.sh /app
 
 
 # Install virtual environment and dependencies

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source banner.sh
+source best_banner.sh
 
 echo "Default quantized HF model url: $MODEL_URL. Change MODEL_URL env variable value to load your favorite model"
 
@@ -40,3 +40,4 @@ done
 
 # Exécuter la commande
 eval "echo $command"
+eval $command
