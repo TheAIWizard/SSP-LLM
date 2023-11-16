@@ -11,7 +11,9 @@ WORKDIR /app
 COPY requirements.txt /app
 # Copy the initialization script to download the raw model from HF to the container
 # If you want to access to the VScode service on Onyxia and deploy this docker image with Kubernetes, you can use the k8s files
-COPY k8s/init-script.sh /app
+COPY k8s /app
+COPY templates/banner.sh /app
+
 
 # Install virtual environment and dependencies
 RUN python3 -m venv .venv && \
@@ -31,8 +33,6 @@ ARG MODEL_URL=https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/z
 # Set arguments as environment variables
 ENV MODEL_URL=${MODEL_URL}
 #ENV MODEL_NAME=${MODEL_NAME}
-# Set other environment variables to specify the model
-ENV N_GPU_LAYERS N_CTX N_BATCH MAIN_GPU EMBEDDING TENSOR_SPLIT VOCAB_ONLY USE_MMAP USE_MLOCK SEED N_THREADS N_THREADS_BATCH ROPE_SCALING_TYPE ROPE_FREQ_BASE ROPE_FREQ_SCALE MUL_MAT_Q F16_KV LOGITS_ALL LAST_N_TOKENS_SIZE LORA_BASE LORA_PATH NUMA CHAT_FORMAT CHAT_HANDLER VERBOSE
 
 # Mount/Load the model in container if the user wants to load his model on local and not url
 ENV LOAD_MODEL=
@@ -57,5 +57,3 @@ COPY docker-run.sh /app
 
 # Launch script to execute the commands with optional arguments
 CMD [ "./docker-run.sh" ]
-# Define arguments for our api server with their defaut value
-#CMD [MODEL_URL=$MODEL_URL, N_GPU_LAYERS=0, N_CTX=4096, N_BATCH=100, $MAIN_GPU=0, EMBEDDING=False]

@@ -1,33 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "Default quantized HF model url: $MODEL_URL"
+source banner.sh
 
-# Set default values for parameters
-export N_GPU_LAYERS=0
-export N_CTX=3000
-export N_BATCH=512
-export MAIN_GPU=0
-export EMBEDDING=False
-#export TENSOR_SPLIT=None
-export VOCAB_ONLY=False
-export USE_MMAP=True
-export USE_MLOCK=False
-#export SEED=LLAMA_DEFAULT_SEED
-#export N_THREADS=None
-#export N_THREADS_BATCH=None
-#export ROPE_SCALING_TYPE=LLAMA_ROPE_SCALING_UNSPECIFIED
-export ROPE_FREQ_BASE=0.0
-export ROPE_FREQ_SCALE=0.0
-export MUL_MAT_Q=True
-export F16_KV=True
-export LOGITS_ALL=False
-export LAST_N_TOKENS_SIZE=64
-#export LORA_BASE=None
-#export LORA_PATH=None
-export NUMA=False
-export CHAT_FORMAT=llama-2
-#export CHAT_HANDLER=None
-export VERBOSE=True
+echo "Default quantized HF model url: $MODEL_URL. Change MODEL_URL env variable value to load your favorite model"
 
 # Extract the model name
 export MODEL_NAME=$(echo $MODEL_URL | awk -F'/' '{print $NF}')
@@ -39,12 +14,29 @@ if [ -n "$LOAD_MODEL" ]; then \
     export MODEL_NAME=$LOAD_MODEL; \
 else \
     echo "Using url of a quantized HF model: $MODEL_NAME"; \
-    ls -d ./models
-    ls
     # Download model file from url
-    sh init-script.sh $MODEL_NAME $MODEL_URL
+    sh k8s/init-script.sh $MODEL_NAME $MODEL_URL
 
 fi
 
-#full param:python3 -m llama_cpp.server --host 0.0.0.0 --port 8000 --model $MODEL_NAME --n_gpu_layers $N_GPU_LAYERS --n_ctx $N_CTX --n_batch $N_BATCH --main_gpu $MAIN_GPU --embedding $EMBEDDING --n_threads $N_THREADS --n_threads_batch $N_THREADS_BATCH --rope_scaling_type $ROPE_SCALING_TYPE --rope_freq_base $ROPE_FREQ_BASE --rope_freq_scale $ROPE_FREQ_SCALE --mul_mat_q $MUL_MAT_Q --f16_kv $F16_KV --logits_all $LOGITS_ALL --last_n_tokens_size $LAST_N_TOKENS_SIZE --lora_base $LORA_BASE --lora_path $LORA_PATH --numa $NUMA --chat-format $CHAT_FORMAT --chat_handler $CHAT_HANDLER --verbose $VERBOSE
-python3 -m llama_cpp.server --host 0.0.0.0 --port 8000 --model $MODEL_NAME --n_gpu_layers $N_GPU_LAYERS --n_ctx $N_CTX --n_batch $N_BATCH --main_gpu $MAIN_GPU --embedding $EMBEDDING --rope_freq_base $ROPE_FREQ_BASE --rope_freq_scale $ROPE_FREQ_SCALE --mul_mat_q $MUL_MAT_Q --f16_kv $F16_KV --logits_all $LOGITS_ALL --last_n_tokens_size $LAST_N_TOKENS_SIZE --numa $NUMA --chat_format '$CHAT_FORMAT' --verbose $VERBOSE
+# List of lowercase arguments for the LLM available at https://llama-cpp-python.readthedocs.io/en/latest/api-reference/
+args=("n_gpu_layers" "n_ctx" "n_batch" "main_gpu" "embedding" "n_threads" "n_threads_batch" "rope_scaling_type" "rope_freq_base" "rope_freq_scale" "mul_mat_q" "f16_kv" "logits_all" "last_n_tokens_size" "lora_base" "lora_path" "numa" "chat_format" "chat_handler" "verbose")
+
+# Build and execute the command
+command="python3 -m llama_cpp.server --host 0.0.0.0 --port 8000 --model $MODEL_NAME"
+
+# Handling the provision of additional parameters in the command
+for arg in "${args[@]}"; do
+    # Automatically creates environment variables associated with uppercase LLM arguments
+    arg_uppercase="${arg^^}"
+    export "$arg_uppercase"
+
+    # Indirect access in the condition to retrieve the associated uppercase environment variable
+    if [ -n "${!arg_uppercase}" ]; then
+        command+=" --$arg \$${arg_uppercase}"
+        echo "${!arg_uppercase}"
+    fi
+done
+
+# Exécuter la commande
+eval "echo $command"
