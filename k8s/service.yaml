@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: open-source-llm-gguf-api-server-gpu
+  name: gguf
 spec:
   selector:
-    app: open-source-llm-gguf-api-server-gpu
+    app: gguf
   ports:
-  - port: 8000
+  - port: 80
     targetPort: 8000

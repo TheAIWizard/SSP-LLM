@@ -1,9 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: open-source-llm-gguf-api-server-gpu
+  name: gguf
   labels:
-    name: open-source-llm-gguf-api-server-gpu
+    name: gguf
 spec:
   tls:
   - hosts: 
@@ -16,6 +16,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: open-source-llm-gguf-api-server-gpu
+            name: gguf
             port: 
-              number: 8000
+              number: 80

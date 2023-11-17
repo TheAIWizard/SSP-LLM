@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: open-source-llm-gguf-api-server-gpu-deployment
+  name: gguf
   labels: 
-    app: open-source-llm-gguf--api-server-gpu
+    app: gguf
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: open-source-llm-gguf--api-server-gpu
+      app: gguf
   template:
     metadata:
       labels:
-        app: open-source-llm-gguf--api-server-gpu
+        app: gguf
     spec:
       containers:
       - name: open-source-llm-gguf--api-server-gpu
         image: aiflowzone/instant-llm-gguf-url-deploy:v0.0
-        ports:
-        - containerPort: 8000
+        #ports:
+        #- containerPort: 8000
         env:
         - name: MODEL_URL
           value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
