@@ -1,62 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-gguf-api
+  name: open-source-llm-gguf-api-server-gpu
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-gguf-api
+      app: open-source-llm-gguf-api-server-gpu
   template:
     metadata:
       labels:
-        app: my-gguf-api
-    spec:
-      initContainers:
-        - name: init-container
-          image: alpine:latest
-          command: ["/bin/sh", "-c"]
-          args: ["sh","~/config/init-script.sh", "/app/data/"] # a refaire plus propre avec configmap
-          volumeMounts:
-          - name: configmap-volume
-            mountPath: ~/config
-          - name: load-init-script
-            mountPath: /app/data
+        app: open-source-llm-gguf--api-server-gpu
       containers:
-        - name: gguf-container
-          image: ghcr.io/abetlen/llama-cpp-python:latest
+        - name: open-source-llm-gguf--api-server-gpu
+          image: aiflowzone/instant-llm-gguf-url-deploy:v0.0
           ports:
-            - containerPort: 7860
+            - containerPort: 8000
           env:
-            - name: HF_HOME
-              value: /data
-            - name: REPO_ID
+            - name: MODEL_URL
               value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
-            - name: MODEL
-              value: "/app/data/zephyr-7b-beta.Q8_0.gguf"
             - name: N_GPU_LAYERS
-              value: "-1"
+              value: 5
             - name: N_CTX
-              value: "4096"
+              value: 4096
             - name: N_BATCH
-              value: "126"
-          volumeMounts:
-            - name: get-model-data
-              mountPath: /app/data
-              subPath: portal
-            - name: load-init-script
-              mountPath: /docker-entrypoint-initdb.d
+              value: 512
           resources:
             limits:
               nvidia.com/gpu: "1"
-              memory: "36Gi"
+              memory: "15Gi"
               cpu: "10000m"
-      volumes:
-        - name: configmap-volume
-          configMap:
-            name: init-script-configmap
-            defaultMode: 0500
-        - name: get-model-data
-          emptyDir: {}
-        - name: load-init-script
-          emptyDir: {}

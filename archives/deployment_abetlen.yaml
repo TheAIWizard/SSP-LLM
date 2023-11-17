@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-gguf-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-gguf-api
+  template:
+    metadata:
+      labels:
+        app: my-gguf-api
+    spec:
+      initContainers:
+        - name: init-container
+          image: alpine:latest
+          command: ["/bin/sh", "-c"]
+          args: ["sh","~/config/init-script.sh", "/app/data/"] # a refaire plus propre avec configmap
+          volumeMounts:
+          - name: configmap-volume
+            mountPath: ~/config
+          - name: load-init-script
+            mountPath: /app/data
+      containers:
+        - name: gguf-container
+          image: ghcr.io/abetlen/llama-cpp-python:latest
+          ports:
+            - containerPort: 7860
+          env:
+            - name: HF_HOME
+              value: /data
+            - name: REPO_ID
+              value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
+            - name: MODEL
+              value: "/app/data/zephyr-7b-beta.Q8_0.gguf"
+            - name: N_GPU_LAYERS
+              value: "-1"
+            - name: N_CTX
+              value: "4096"
+            - name: N_BATCH
+              value: "126"
+          volumeMounts:
+            - name: get-model-data
+              mountPath: /app/data
+              subPath: portal
+            - name: load-init-script
+              mountPath: /docker-entrypoint-initdb.d
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+              memory: "36Gi"
+              cpu: "10000m"
+      volumes:
+        - name: configmap-volume
+          configMap:
+            name: init-script-configmap
+            defaultMode: 0500
+        - name: get-model-data
+          emptyDir: {}
+        - name: load-init-script
+          emptyDir: {}

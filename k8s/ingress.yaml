@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: open-source-llm-gguf-api-server-gpu
+  labels:
+    name: open-source-llm-gguf-api-server-gpu
+spec:
+  tls:
+  - hosts: 
+    - zephyr-7b-beta-gguf-q8.kub.sspcloud.fr
+  rules:
+  - host: zephyr-7b-beta-gguf-q8.kub.sspcloud.fr
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: flask
+            port: 
+              number: 8000
