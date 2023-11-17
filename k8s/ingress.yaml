@@ -16,6 +16,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: flask
+            name: open-source-llm-gguf-api-server-gpu
             port: 
               number: 8000

@@ -1,32 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: open-source-llm-gguf-api-server-gpu
+  name: open-source-llm-gguf-api-server-gpu-deployment
+  labels: 
+    app: open-source-llm-gguf--api-server-gpu
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: open-source-llm-gguf-api-server-gpu
+      app: open-source-llm-gguf--api-server-gpu
   template:
     metadata:
       labels:
         app: open-source-llm-gguf--api-server-gpu
+    spec:
       containers:
-        - name: open-source-llm-gguf--api-server-gpu
-          image: aiflowzone/instant-llm-gguf-url-deploy:v0.0
-          ports:
-            - containerPort: 8000
-          env:
-            - name: MODEL_URL
-              value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
-            - name: N_GPU_LAYERS
-              value: 5
-            - name: N_CTX
-              value: 4096
-            - name: N_BATCH
-              value: 512
-          resources:
-            limits:
-              nvidia.com/gpu: "1"
-              memory: "15Gi"
-              cpu: "10000m"
+      - name: open-source-llm-gguf--api-server-gpu
+        image: aiflowzone/instant-llm-gguf-url-deploy:v0.0
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MODEL_URL
+          value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
+        - name: N_GPU_LAYERS
+          value: "5"
+        - name: N_CTX
+          value: "4096"
+        - name: N_BATCH
+          value: "512"
+        resources:
+          limits:
+            nvidia.com/gpu: "1"
+            memory: "15Gi"
+            cpu: "10000m"
+
+
