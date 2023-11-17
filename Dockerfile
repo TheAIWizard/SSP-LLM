@@ -12,7 +12,7 @@ COPY requirements.txt /app
 # Copy the initialization script to download the raw model from HF to the container
 # If you want to access to the VScode service on Onyxia and deploy this docker image with Kubernetes, you can use the k8s files
 COPY k8s /app
-COPY templates/best_banner.sh /app
+COPY templates/banner.sh /app
 
 
 # Install virtual environment and dependencies
@@ -26,7 +26,7 @@ ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/cuda/lib64
 ENV PATH $PATH:$CUDA_HOME/bin
 
 # Extract the model URL on TheBloke HF website (default URL)
-ARG MODEL_URL=https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf
+ARG MODEL_URL=
 # Extract the model name
 #ARG MODEL_NAME=$(echo "$MODEL_URL" | awk -F'/' '{print $NF}')
 

@@ -33,4 +33,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/instant-llm-gguf-url-deploy:v3.0
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/instant-llm-gguf-url-deploy:v2.0

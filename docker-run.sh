@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source best_banner.sh
+source banner.sh
 
 echo "Default quantized HF model url: $MODEL_URL. Change MODEL_URL env variable value to load your favorite model"
 
