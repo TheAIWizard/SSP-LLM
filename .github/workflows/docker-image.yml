@@ -8,7 +8,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      -
+      - name: Make free space
+          # https://github.com/actions/virtual-environments/issues/2840
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
+          docker rmi -f $(docker images -aq)
+        shell: bash
+      - 
         name: Checkout
         uses: actions/checkout@v4
       -
