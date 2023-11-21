@@ -56,4 +56,4 @@ WORKDIR /app
 COPY docker-run.sh /app
 
 # Launch script to execute the commands with optional arguments
-CMD [ "sudo ./docker-run.sh" ]
+CMD [ "./docker-run.sh" ]
