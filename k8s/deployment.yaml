@@ -15,7 +15,7 @@ spec:
         app: gguf
     spec:
       containers:
-      - name: open-source-llm-gguf-api-server-gpu
+      - name: os-llm-gguf-api-server-gpu
         image: aiflowzone/instant-llm-gguf-url-deploy:v1.0
         #ports:
         #- containerPort: 8000
