@@ -59,6 +59,5 @@ WORKDIR /app
 COPY docker-run.sh /app
 RUN sudo chmod +x docker-run.sh
 RUN echo docker-run.sh
-RUN ls -l docker.sh
 # Launch script to execute the commands with optional arguments
 CMD [ "./docker-run.sh" ]
