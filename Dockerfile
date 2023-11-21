@@ -2,7 +2,7 @@
 FROM inseefrlab/onyxia-vscode-pytorch:py3.11.4-gpu
 
 # Manage rights for k8s
-USER ROOT   
+USER root   
 
 # Bind to a port
 EXPOSE 8000
