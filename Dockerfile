@@ -1,6 +1,9 @@
 # Use the InseeFrLab Python image with pytorch and GPU integration as the base image
 FROM inseefrlab/onyxia-vscode-pytorch:py3.11.4-gpu
 
+# Manage rights for k8s
+USER ROOT   
+
 # Bind to a port
 EXPOSE 8000
 
