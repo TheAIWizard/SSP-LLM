@@ -2,7 +2,7 @@
 FROM inseefrlab/onyxia-vscode-pytorch:py3.11.4-gpu
 
 # Manage rights for k8s
-USER root   
+#USER root   
 
 # Bind to a port
 EXPOSE 8000
@@ -57,6 +57,6 @@ WORKDIR /app
 
 # Copy the entry point script from the local directory to the container
 COPY docker-run.sh /app
-RUN chmod +x docker-run.sh
+#RUN chmod +x docker-run.sh
 # Launch script to execute the commands with optional arguments
-CMD [ "./docker-run.sh" ]
+ENTRYPOINT ["bash","-c","./docker-run.sh" ]
