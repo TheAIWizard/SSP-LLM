@@ -59,4 +59,4 @@ WORKDIR /app
 COPY docker-run.sh /app
 #RUN chmod +x docker-run.sh
 # Launch script to execute the commands with optional arguments
-CMD ["./docker-run.sh" ]
+CMD ["docker-run.sh" ]
