@@ -57,6 +57,6 @@ WORKDIR /app
 
 # Copy the entry point script from the local directory to the container
 COPY docker-run.sh /app
-RUN sudo chmod +x docker-run.sh
+RUN chmod +x docker-run.sh
 # Launch script to execute the commands with optional arguments
 CMD [ "./docker-run.sh" ]
