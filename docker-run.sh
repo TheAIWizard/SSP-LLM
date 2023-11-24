@@ -39,5 +39,8 @@ for arg in "${args[@]}"; do
 done
 
 # Exécuter la commande
-eval "echo $command"
-eval $command
+#eval "echo $command"
+#eval $command
+
+echo $command
+$command
