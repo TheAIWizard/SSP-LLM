@@ -43,4 +43,4 @@ done
 #eval $command
 
 echo $command
-$command
+sh -c $command
