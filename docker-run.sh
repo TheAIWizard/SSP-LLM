@@ -16,7 +16,6 @@ else \
     echo "Using url of a quantized HF model: $MODEL_NAME"; \
     # Download model file from url
     sh init-script.sh $MODEL_NAME $MODEL_URL
-
 fi
 
 # List of lowercase arguments for the LLM available at https://llama-cpp-python.readthedocs.io/en/latest/api-reference/
