@@ -20,7 +20,7 @@ RUN git clone --recurse-submodules https://github.com/abetlen/llama-cpp-python.g
     CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install -e .[server] --no-cache-dir
 
 # Copy the entry point script from the local directory to the container
-COPY k8s/ k8s/
+COPY k8s/init-script.sh .
 COPY templates/banner.sh .
 COPY docker-run.sh .
 

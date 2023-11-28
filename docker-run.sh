@@ -15,7 +15,7 @@ if [ -n "$LOAD_MODEL" ]; then \
 else \
     echo "Using url of a quantized HF model: $MODEL_NAME"; \
     # Download model file from url
-    sh k8s/init-script.sh $MODEL_NAME $MODEL_URL
+    sh init-script.sh $MODEL_NAME $MODEL_URL
 
 fi
 
