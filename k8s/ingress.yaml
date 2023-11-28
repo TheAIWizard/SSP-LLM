@@ -7,9 +7,9 @@ metadata:
 spec:
   tls:
   - hosts: 
-    - zephyr-7b-beta-gguf-q8.kub.sspcloud.fr
+    - debug-romain.kub.sspcloud.fr
   rules:
-  - host: zephyr-7b-beta-gguf-q8.kub.sspcloud.fr
+  - host: debug-romain.kub.sspcloud.fr
     http:
       paths:
       - pathType: Prefix
