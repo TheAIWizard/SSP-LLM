@@ -20,7 +20,8 @@ spec:
         #fsGroup: 2000
       containers:
       - name: os-llm-gguf-api-server-gpu
-        image: aiflowzone/instant-llm-gguf-url-deploy:v1.0
+        image: ttl.sh/debug-app-nathan:1h
+        imagePullPolicy: Always
         #ports:
         #- containerPort: 8000
         env:
