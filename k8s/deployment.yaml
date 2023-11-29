@@ -14,15 +14,17 @@ spec:
       labels:
         app: gguf
     spec:
-      #securityContext:
-        #runAsUser: 1000
-        #runAsGroup: 3000
-        #fsGroup: 2000
+      volumes:
+        - name: models-dir
+          emptyDir: {}
       containers:
       - name: os-llm-gguf-api-server-gpu
-        image: aiflowzone/instant-llm-gguf-url-deploy:v1.0
-        #ports:
-        #- containerPort: 8000
+        image: ttl.sh/debug-app-nathan:1h
+        imagePullPolicy: Always
+        volumeMounts:
+            - mountPath: /home/onyxia/models
+              subPath: models
+              name: models-dir
         env:
         - name: MODEL_URL
           value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
@@ -35,5 +37,3 @@ spec:
             #nvidia.com/gpu: "1"
             memory: "30Gi"
             cpu: "10000m"
-
-
