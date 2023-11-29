@@ -1,6 +1,6 @@
 # Use the InseeFrLab Python image with pytorch and GPU integration as the base image
 # fix avouacr: inseefrlab/onyxia-python-minimal:py3.11.4
-FROM inseefrlab/onyxia-vscode-pytorch:py3.11.4-gpu 
+FROM inseefrlab/onyxia-python-minimal:py3.11.4
 
 EXPOSE 8000
 
