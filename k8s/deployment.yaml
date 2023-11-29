@@ -19,7 +19,7 @@ spec:
           emptyDir: {}
       containers:
       - name: os-llm-gguf-api-server-gpu
-        image: ttl.sh/debug-app-nathan:1h
+        image: instant-llm-gguf-url-deploy:v1.0 #ttl.sh/debug-app-nathan:1h
         imagePullPolicy: Always
         volumeMounts:
             - mountPath: /home/onyxia/models
