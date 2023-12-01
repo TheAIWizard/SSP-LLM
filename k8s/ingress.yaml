@@ -7,9 +7,9 @@ metadata:
 spec:
   tls:
   - hosts: 
-    - debug-romain.kub.sspcloud.fr
+    - llm-api.kub.sspcloud.fr
   rules:
-  - host: debug-romain.kub.sspcloud.fr
+  - host: llm-api.kub.sspcloud.fr
     http:
       paths:
       - pathType: Prefix

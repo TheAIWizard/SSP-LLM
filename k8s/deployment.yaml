@@ -19,7 +19,7 @@ spec:
           emptyDir: {}
       containers:
       - name: os-llm-gguf-api-server-gpu
-        image: instant-llm-gguf-url-deploy:v1.0 #ttl.sh/debug-app-nathan:1h
+        image: aiflowzone/instant-llm-gguf-url-deploy:v1.0 #ttl.sh/debug-app-nathan:1h
         imagePullPolicy: Always
         volumeMounts:
             - mountPath: /home/onyxia/models
@@ -29,11 +29,11 @@ spec:
         - name: MODEL_URL
           value: "https://huggingface.co/TheBloke/zephyr-7B-beta-GGUF/resolve/main/zephyr-7b-beta.Q8_0.gguf"
         - name: N_GPU_LAYERS
-          value: "0"
+          value: "35"
         - name: N_CTX
           value: "4096"
         resources:
           limits:
-            #nvidia.com/gpu: "1"
+            nvidia.com/gpu: "1"
             memory: "30Gi"
             cpu: "10000m"
